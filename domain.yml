@@ -1,0 +1,171 @@
+session_config:
+  session_expiration_time: 10 # minutes
+  carry_over_slots_to_new_session: false
+
+intents:
+  - greet
+  - nss
+  - end:
+      triggers: action_end
+  - affirm
+  - deny
+
+entities:
+  - nss
+
+forms:
+  - quejas_form
+  
+actions:
+  - action_end
+
+slots:
+  nombre:
+    type: unfeaturized
+    auto_fill: false
+  nss:
+    type: unfeaturized
+    auto_fill: false
+  queja:
+    type: unfeaturized
+    auto_fill: false
+  nombre_beneficiario:
+    type: unfeaturized
+    auto_fill: false
+  confirmar_estado:
+    type: unfeaturized
+    auto_fill: false
+  estado:
+    type: unfeaturized
+    auto_fill: false
+  ciudad:
+    type: unfeaturized
+    auto_fill: false
+  unidad_imss_opciones:
+    type: unfeaturized
+    auto_fill: false
+  unidad_imss:
+    type: unfeaturized
+    auto_fill: false
+  categoria:
+    type: unfeaturized
+    auto_fill: false
+  queja_id:
+    type: unfeaturized
+    auto_fill: false
+  medicamento_opciones:
+    type: unfeaturized
+    auto_fill: false
+  confirmar_medicamento:
+    type: unfeaturized
+    auto_fill: false
+  
+  requested_slot:
+    type: unfeaturized
+
+  queja_version:
+    type: text
+  nombre_beneficiario_opciones:
+    type: text
+  diagnostico:
+    type: text
+
+  solicitud_opciones:
+    type: text
+  medicamentos:
+    type: text
+  alta_apo:
+    type: text
+
+responses:
+  utter_default:
+    - text: "Disculpa, no pude entender eso. \n¿Podrías decirlo de otra manera?"
+    - text: "No pude entender eso. \n¿Podrías intentar decirlo de otra manera?"
+  utter_greet:
+    - text: "Hola, soy un asistente que te permitirá a ti como familiar de paciente oncológico pediátrico enviar solicitudes al Instituto. \nLos mensajes de tu solicitud pueden ser texto, voz, imagen o video. Escribe *FIN* en cualquier momento para terminar."
+  utter_ask_nombre:
+    - text: "¿Cuál es tu nombre?"
+  utter_ask_nss:
+    - text: "¿Cuál es tu número de seguridad social? (NSS del asegurado)"
+  utter_ask_queja_id:
+    - text: "Tienes {numero} solicitud(es) registrada(s), elige a cuál de ellas quieres complementar información o si se trata de una nueva. \n{solicitudes}"
+  utter_ask_confirmar_estado:
+    - text: "¡Hola {nombre}! \nConfirma si te encuentras en el Estado de {estado} (SI/NO)"
+  utter_ask_confirmar_estado_df:
+    - text: "¡Hola {nombre}! \nConfirma si te encuentras en la {estado} (SI/NO)"
+  utter_ask_estado:
+    - text: "¿En qué Estado de la República te encuentras?"
+  utter_ask_ciudad:
+    - text: "¿En qué municipio del Estado de {estado} te encuentras?"
+  utter_ask_ciudad_df:
+    - text: "¿En qué alcaldía de la {estado} te encuentras?"
+  utter_ask_categoria:
+    - text: "Selecciona una categoría: (escribe el número correspondiente) \n{categorias}"
+  utter_ask_nombre_beneficiario:
+    - text: "¿Cuál es el nombre del paciente?"
+  utter_ask_nombre_beneficiario_opciones:
+    - text: "¿Cuál es el nombre del paciente?: (escribe el número correspondiente) \n{nombres}"
+  utter_ask_medicamento_opciones:
+    - text: "¿Cuál es el medicamento que está relacionado a la solicitud? \nEscribe al menos 5 caracteres contenidos en el nombre del medicamento."
+  utter_ask_medicamento_opciones_o_continuar:
+    - text: "Escribe al menos 5 caracteres de un nuevo medicamento o *CONTINUAR* para adicionar mensaje(s) a su solicitud."
+  utter_ask_confirmar_medicamento_similar:
+    - text: "Escribe *SI* para confirmar que tu medicamento es _{medicamento}_ o *NO* si no es el medicamento."
+  utter_ask_confirmar_medicamento_opciones:
+    - text: "¿Cuál de los siguientes es tu medicamento? \nEscribe el número correspondiente: \n{opciones_medicamentos}"
+
+  utter_ask_unidad_imss_opciones:
+    - text: "¿Cuál es el nombre de la Unidad que brinda atención a tu paciente? \nEscribe al menos 5 caracteres contenidos en el nombre de la Unidad."
+  utter_ask_unidad_imss:
+    - text: "¿Cuál es la Unidad? \nEscribe el número correspondiente o la palabra *OTRA*: \n{opciones}"
+  utter_ask_unidad_imss_confirmar:
+    - text: "Escribe *SI* para confirmar que la Unidad es _{unidad}_ o *NO* si no es la Unidad."
+  utter_unidad_no_encontrada:
+    - text: "No se encontraron coincidencias, intenta con una entrada diferente."
+  utter_unidad_no_informacion:
+    - text: "No es suficiente información para encontrar la Unidad."
+
+  utter_nss_incorrecto:
+    - text: "El NSS debe ser de 10 caracteres numéricos."
+  utter_estado_incorrecto:
+    - text: "Estado no identificado. Escribe el Estado de la República en donde te encuentras."
+  utter_no_derechos:
+    - text: "Lo siento, no cuentas con vigencia de derechos. \nEscribe un nuevo NSS o *FIN* para terminar."
+  utter_no_oncologia:
+    - text: "Lo siento, no identificamos que tengas un beneficiario que sea paciente de oncología. \nEscribe un nuevo NSS o *FIN* para terminar."
+  utter_error_detalle:
+    - text: "Lo siento, ha ocurrido un error: \n{error}"
+  utter_error:
+    - text: "Lo siento, ha ocurrido un error."
+  utter_nombre_beneficiario_incorrecto:
+    - text: "No se encontró ese familiar como paciente oncológico."
+  utter_nombre_beneficiario_incorrecto_no_apo:
+    - text: "No se encontró ese familiar como beneficiario."
+  utter_numero_incorrecto:
+    - text: "Opción no válida."
+  utter_numero_incorrecto_elige:
+    - text: "Elige un medicamento de la lista o *NUEVO* si tu medicamento no se encuentra listado."
+
+  utter_medicamento_no_encontrado:
+    - text: "No se encontraron coincidencias, intenta con una entrada diferente."
+  utter_medicamento_no_informacion:
+    - text: "No es suficiente información para encontrar el medicamento."
+  utter_agregar_un_medicamento:
+    - text: "Debes agregar al menos un medicamento para continuar."
+  utter_medicamento_registrado:
+    - text: "Medicamento _{medicamento}_ registrado."
+  # utter_medicamento_previamente_registrado:
+  #   - text: "El medicamento _{medicamento}_ ya fue registrado. \nEscribe un nuevo medicamento o *CONTINUAR*."
+
+  utter_escribir_quejas:
+    - text: "A continuación, escribe tu solicitud. Puedes incluir mensajes de texto, voz, imagen y video. \nAl terminar, escribe la palabra *FIN*."
+  utter_mas_quejas:
+    - text: "Puedes agregar más texto o elementos a la solicitud o *FIN* para concluirla y enviarla."
+  utter_end:
+    - text: "Gracias {nombre}, se ha registrado tu solicitud, daremos respuesta en breve."
+  utter_end_mensajes:
+    - text: "Gracias {nombre}, se han agregado tus mensajes, daremos respuesta en breve."
+  utter_end_no_queja:
+    - text: "Conversación terminada."
+  utter_quota_nss:
+    - text: "Lo siento, has llegado al límite de nuevas solicitudes con este NSS. \nPuedes agregar mensajes a otras solicitudes."

@@ -1,0 +1,32 @@
+version: "3.4"
+
+services:
+  rasa:
+    build:
+      context: .
+      target: base
+    env_file: .env
+    volumes:
+      - models:/app/models
+    ports:
+      - 5002:5002
+      - 5005:5005
+      - 5050:5050
+
+  redis:
+    image: bitnami/redis:6.0
+    env_file: .env
+    expose:
+      - 6379
+
+  redis-commander:
+    image: wolmi/redis-commander
+    environment:
+      - REDIS_HOSTS=local:${REDIS_HOSTNAME}:6379:0:${REDIS_PASSWORD}
+    ports:
+      - 8081:8081
+    depends_on:
+      - redis
+
+volumes:
+  models:

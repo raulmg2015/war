@@ -1,0 +1,13 @@
+action_endpoint:
+  url: http://localhost:5055/webhook
+
+tracker_store:
+  type: tracker.redis.LimitedRedisTrackerStore
+  url: ${REDIS_HOSTNAME}
+  password: ${REDIS_PASSWORD}
+  record_exp: 600
+
+lock_store:
+  type: redis
+  url: ${REDIS_HOSTNAME}
+  password: ${REDIS_PASSWORD}

@@ -1,0 +1,25 @@
+language: es
+
+pipeline:
+  - name: SpacyNLP
+  - name: SpacyTokenizer
+  - name: SpacyFeaturizer
+  - name: RegexFeaturizer
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+  - name: CountVectorsFeaturizer
+    analyzer: "char_wb"
+    min_ngram: 1
+    max_ngram: 4
+  - name: DIETClassifier
+    epochs: 100
+  - name: EntitySynonymMapper
+
+policies:
+  - name: MappingPolicy
+  - name: MemoizationPolicy
+    max_history: 10
+  - name: FormPolicy
+  - name: FallbackPolicy
+    # nlu_threshold: 0.75
+    # core_threshold: 0.70
