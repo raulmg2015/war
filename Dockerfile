@@ -1,28 +1,25 @@
-# This image provides a Python 3.5 environment you can use to run your Python
-# applications.
-FROM openshift/base-centos7
+# Install Rasa
+FROM python:3.6
+ENV PIP_DEFAULT_TIMEOUT 100
+RUN pip install --upgrade pip && \
+    pip install rasa==1.10.11 && \
+    pip install spacy==2.3.0 && \
+    pip install pydub==0.24.1 && \
+    spacy download es_core_news_md && \
+    spacy link es_core_news_md es
 
-MAINTAINER SoftwareCollections.org <sclorg@redhat.com>
+# Install other requirements and add files
+ADD requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-EXPOSE 8080
+COPY . .
 
-ENV PYTHON_VERSION=3.5 \
-    PATH=$HOME/.local/bin/:$PATH
-
-LABEL io.k8s.description="Platform for building and running Python 3.5 applications" \
-      io.k8s.display-name="Python 3.5" \
-      io.openshift.expose-services="8080:http" \
-      io.openshift.tags="builder,python,python35,rh-python35"
-
-RUN yum install -y centos-release-scl-rh epel-release && \
-    yum-config-manager --enable centos-sclo-rh-testing && \
-    INSTALL_PKGS="rh-python35 rh-python35-python-devel rh-python35-python-setuptools rh-python35-python-pip nss_wrapper httpd httpd-devel atlas-devel gcc-gfortran libffi-devel postgresql-devel openssl-devel openldap-devel ImageMagick-devel dcraw" && \
-    yum install -y --setopt=tsflags=nodocs --enablerepo=centosplus --enablerepo=epel $INSTALL_PKGS && \
-    rpm -V $INSTALL_PKGS && \
-    # Remove centos-logos (httpd dependency, ~20MB of graphics) to keep image
-    # size smaller.
-    rpm -e --nodeps centos-logos && \
-    yum clean all -y
+# Install Caddy
+USER root
+RUN yum -y install libcap nss-tools wget tar && \
+    wget https://github.com/caddyserver/caddy/releases/download/v2.0.0/caddy_2.0.0_linux_amd64.tar.gz && \
+    tar -C /usr/local/bin/ -xf caddy_2.0.0_linux_amd64.tar.gz caddy && \
+    chmod a+x entrypoint.sh
 
 RUN yum localinstall -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm
 
